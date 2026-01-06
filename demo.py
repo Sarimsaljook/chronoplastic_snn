@@ -4,10 +4,7 @@ matplotlib.use('Qt5Agg')
 import matplotlib.pyplot as plt
 import time
 
-
-# -------------------------------
 # Simple surrogate spike function
-# -------------------------------
 class SpikeFn(torch.autograd.Function):
     @staticmethod
     def forward(ctx, x):
@@ -23,10 +20,7 @@ class SpikeFn(torch.autograd.Function):
 
 spike_fn = SpikeFn.apply
 
-
-# -------------------------------
-# Tiny synthetic dataset generator
-# -------------------------------
+# Dataset
 def make_dataset(n=500, T=30, C=8, min_gap=3, max_gap=8, seed=0):
     g = torch.Generator().manual_seed(seed)
     X = torch.zeros(n, T, C)
@@ -41,10 +35,7 @@ def make_dataset(n=500, T=30, C=8, min_gap=3, max_gap=8, seed=0):
         y[i] = ((a % 2) ^ (b % 2)).float()  # label = XOR of parity
     return X, y
 
-
-# -------------------------------
-# Simple CPSNN core components
-# -------------------------------
+# CPSNN core components
 class ChronoSynapse(nn.Module):
     """Fast+Slow traces with learned adaptive decay"""
 
@@ -101,10 +92,7 @@ class CPSNN(nn.Module):
         h = self.l1(x_seq)
         return self.readout(h).squeeze(-1)
 
-
-# -------------------------------
-# Quick training loop
-# -------------------------------
+# training loop
 def run_demo():
     torch.manual_seed(0)
     device = "cpu"
@@ -113,7 +101,7 @@ def run_demo():
     model = CPSNN(C_in=X.shape[2], C_hidden=32).to(device)
     opt = torch.optim.Adam(model.parameters(), lr=0.01)
 
-    print("[INFO] Training CPSNN demo (fast mode)...")
+    print("[INFO] Training CPSNN demo...")
     acc_hist = []
     start = time.time()
     for epoch in range(1, 506):
@@ -131,7 +119,7 @@ def run_demo():
     plt.plot(acc_hist, label='CPSNN Accuracy', color='royalblue')
     plt.xlabel('Epoch');
     plt.ylabel('Accuracy');
-    plt.title('Fast CPSNN Demo');
+    plt.title('CPSNN Demo');
     plt.legend()
     plt.tight_layout();
     plt.show()
