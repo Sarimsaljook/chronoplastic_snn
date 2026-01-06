@@ -24,7 +24,7 @@ class SuperSpike(torch.autograd.Function):
 
 spike_fn=SuperSpike.apply
 
-# ---------- Dataset ----------
+# Dataset
 class LongGapTwoCueDataset(Dataset):
     def __init__(self,n=4000,T=100,C=16,min_gap=8,max_gap=25,
                  distractor_p=0.05,seed=0):
