@@ -7,7 +7,7 @@ matplotlib.use('Qt5Agg')
 import matplotlib.pyplot as plt
 from dataclasses import dataclass
 
-# ---------- Utils ----------
+# Utils
 def set_seed(seed=42):
     torch.manual_seed(seed); random.seed(seed); np.random.seed(seed)
 
@@ -44,7 +44,7 @@ class LongGapTwoCueDataset(Dataset):
     def __len__(self): return self.X.shape[0]
     def __getitem__(self,i): return self.X[i],self.y[i]
 
-# ---------- Synapses ----------
+# Synapses
 class BaselineSynapse(nn.Module):
     def __init__(self,c_in,c_out,alpha=0.95):
         super().__init__()
@@ -82,7 +82,7 @@ class ChronoPlasticSynapse(nn.Module):
         cur=spikes@self.W+(self.gamma_fast*fast_next)@self.W+(self.gamma_slow*slow_next)@self.W
         return (cur,fast_next,slow_next,warp) if return_warp else (cur,fast_next,slow_next)
 
-# ---------- LIF ----------
+# LIF 
 @dataclass
 class LIFParams:
     v_th:float=1.0; v_reset:float=0.0; dt:float=1e-3; tau_mem:float=2e-2
@@ -122,7 +122,7 @@ class LIFLayer(nn.Module):
         spikes_out=torch.stack(outs,0); rates_out=spikes_out.mean(0)
         return spikes_out,rates_out,warp_log
 
-# ---------- Network ----------
+# Network
 class SpikingNet(nn.Module):
     def __init__(self,C_in,C_hidden,C_out,lif:LIFParams,chrono=True):
         super().__init__()
@@ -136,7 +136,7 @@ class SpikingNet(nn.Module):
         logits=self.readout(r2).squeeze(-1)
         return logits,(w1 if log else None)
 
-# ---------- Train/Eval ----------
+# Train and Eval
 def run_epoch(model,loader,opt,device,train=True):
     if train:model.train()
     else:model.eval()
@@ -151,7 +151,7 @@ def run_epoch(model,loader,opt,device,train=True):
         correct+=(preds==y).sum().item(); total+=y.numel()
     return correct/total
 
-# ---------- Main ----------
+# Main
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument("--epochs",type=int,default=40)
@@ -180,7 +180,7 @@ def main():
         acc_b_hist.append(val_b); acc_c_hist.append(val_c)
         print(f"Ep{ep:02d} gap=({gap_min},{gap_max}) noise={noise:.3f} | Base {val_b:.3f}  CPSNN {val_c:.3f}")
 
-    # ---------- Plots ----------
+    # Plots
     plt.figure(figsize=(7,4))
     plt.plot(acc_b_hist,label="Baseline SNN",linewidth=2)
     plt.plot(acc_c_hist,label="ChronoPlastic SNN",linewidth=2)
@@ -189,7 +189,7 @@ def main():
     plt.legend(); plt.grid(True); plt.tight_layout()
     plt.savefig("accuracy_plot.png"); plt.show()
 
-    # Warp-factor visualization
+    # Warp factor visualization
     sample,_=val_ds[0]; X=sample.unsqueeze(1).to(device)
     _,warps=cpsnn(X,log=True)
     plt.figure(figsize=(6,3))
