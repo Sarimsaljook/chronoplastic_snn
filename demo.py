@@ -4,7 +4,7 @@ matplotlib.use('Qt5Agg')
 import matplotlib.pyplot as plt
 import time
 
-# Simple surrogate spike function
+# surrogate spike function
 class SpikeFn(torch.autograd.Function):
     @staticmethod
     def forward(ctx, x):
