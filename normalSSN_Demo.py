@@ -7,11 +7,9 @@ import matplotlib
 matplotlib.use('Qt5Agg')
 import matplotlib.pyplot as plt
 
-# --------------------------
-# 1. Synthetic Dataset
-# --------------------------
+# Dataset
 class LongGapTwoCueDataset(Dataset):
-    """Two 'cue' spikes with variable gap, XOR label."""
+    """Two cue spikes with variable gap XOR label."""
     def __init__(self, n=800, T=40, C=12, min_gap=3, max_gap=10, seed=0):
         g = torch.Generator().manual_seed(seed)
         self.X = torch.zeros(n, T, C)
@@ -29,10 +27,7 @@ class LongGapTwoCueDataset(Dataset):
     def __len__(self): return len(self.X)
     def __getitem__(self, i): return self.X[i], self.y[i]
 
-
-# --------------------------
-# 2. SuperSpike Surrogate
-# --------------------------
+# SuperSpike Surrogate
 class SuperSpike(torch.autograd.Function):
     @staticmethod
     def forward(ctx, x, beta=10.0):
@@ -48,10 +43,7 @@ class SuperSpike(torch.autograd.Function):
 
 spike_fn = SuperSpike.apply
 
-
-# --------------------------
-# 3. Basic Synapse (single exponential trace)
-# --------------------------
+# Basic Synapse with single exponential trace
 class SimpleSynapse(nn.Module):
     def __init__(self, c_in, c_out, alpha=0.9):
         super().__init__()
@@ -64,10 +56,7 @@ class SimpleSynapse(nn.Module):
         current = spikes @ self.W + trace_next @ self.W
         return current, trace_next
 
-
-# --------------------------
-# 4. LIF Neuron Layer
-# --------------------------
+# LIF Neuron Layer
 class LIFLayer(nn.Module):
     def __init__(self, c_in, c_out, dt=1e-3, tau=2e-2):
         super().__init__()
@@ -90,10 +79,7 @@ class LIFLayer(nn.Module):
         rates = spikes_out.mean(dim=0)
         return spikes_out, rates
 
-
-# --------------------------
-# 5. Network + Training
-# --------------------------
+# Network and Training
 class StandardSNN(nn.Module):
     def __init__(self, C_in, hidden, out):
         super().__init__()
@@ -122,10 +108,7 @@ def train(model, loader, opt, device):
         total += y.numel()
     return correct / total
 
-
-# --------------------------
-# 6. Run Experiment
-# --------------------------
+# Main
 def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     train_ds = LongGapTwoCueDataset(n=400, T=40, C=12)
