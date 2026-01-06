@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from dataclasses import dataclass
 
 
-# ---------------------- Utils ----------------------
+# Utils 
 
 def set_seed(seed=42):
     torch.manual_seed(seed)
@@ -33,7 +33,7 @@ class SuperSpike(torch.autograd.Function):
 spike_fn = SuperSpike.apply
 
 
-# ---------------------- Dataset ----------------------
+# Dataset 
 
 class LongGapTwoCueDataset(Dataset):
     def __init__(self, num_samples=5000, T=100, C=16,
@@ -59,7 +59,7 @@ class LongGapTwoCueDataset(Dataset):
     def __getitem__(self, i): return self.X[i], self.y[i]
 
 
-# ---------------------- Synapses ----------------------
+# Synapses
 
 class BaselineSynapse(nn.Module):
     def __init__(self, c_in, c_out, alpha=0.95):
@@ -105,7 +105,7 @@ class ChronoPlasticSynapse(nn.Module):
         else: return cur, fast_next, slow_next
 
 
-# ---------------------- LIF layer ----------------------
+# LIF layer
 
 @dataclass
 class LIFParams:
@@ -148,7 +148,7 @@ class LIFLayer(nn.Module):
         return spikes_out,rates_out,warps
 
 
-# ---------------------- Network ----------------------
+# Network
 
 class SpikingNet(nn.Module):
     def __init__(self,C_in,C_hidden,C_out,lif:LIFParams,chrono=True):
@@ -164,7 +164,7 @@ class SpikingNet(nn.Module):
         return logits,(w1 if log else None)
 
 
-# ---------------------- Train / Eval ----------------------
+# Train and Eval
 
 def run_epoch(model,loader,opt,device,train=True):
     if train: model.train()
@@ -182,7 +182,7 @@ def run_epoch(model,loader,opt,device,train=True):
     return correct/total
 
 
-# ---------------------- Main ----------------------
+# Main
 
 def main():
     parser=argparse.ArgumentParser()
