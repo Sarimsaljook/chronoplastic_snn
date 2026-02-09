@@ -1,15 +1,10 @@
 # ChronoPlastic Spiking Neural Networks
 
-**Adaptive Time Warping for Long Horizon Memory**
-
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
-
 > **Under Review at ICML 2026**
 
-## Abstract
+## Introduction
 
-Spiking neural networks (SNNs) offer a biologically grounded and energy-efficient alternative to conventional neural architectures; however, they struggle with long-range temporal dependencies due to fixed synaptic and membrane time constants. This repository introduces **ChronoPlastic Spiking Neural Networks (CPSNNs)**, a novel architectural principle that enables adaptive temporal credit assignment by dynamically modulating synaptic decay rates conditioned on the state of the network. CPSNNs maintain multiple internal temporal traces and learn a continuous time-warping function that selectively preserves task-relevant information while rapidly forgetting noise. Unlike prior approaches based on adaptive membrane constants, attention mechanisms, or external memory, CPSNNs embed temporal control directly within local synaptic dynamics, preserving linear-time complexity and neuromorphic compatibility.
+This repository introduces **ChronoPlastic Spiking Neural Networks (CPSNNs)**, a novel architectural principle that enables adaptive temporal credit assignment by dynamically modulating synaptic decay rates conditioned on the state of the network. CPSNNs maintain multiple internal temporal traces and learn a continuous time-warping function that selectively preserves task-relevant information while rapidly forgetting noise. Unlike prior approaches based on adaptive membrane constants, attention mechanisms, or external memory, CPSNNs embed temporal control directly within local synaptic dynamics, preserving linear-time complexity and neuromorphic compatibility.
 
 ### Notable Results
 
