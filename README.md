@@ -9,7 +9,7 @@
 
 ## Abstract
 
-Spiking neural networks (SNNs) offer a biologically grounded and energy-efficient alternative to conventional neural architectures; however, they struggle with long-range temporal dependencies due to fixed synaptic and membrane time constants. This paper introduces **ChronoPlastic Spiking Neural Networks (CPSNNs)**, a novel architectural principle that enables adaptive temporal credit assignment by dynamically modulating synaptic decay rates conditioned on the state of the network.
+Spiking neural networks (SNNs) offer a biologically grounded and energy-efficient alternative to conventional neural architectures; however, they struggle with long-range temporal dependencies due to fixed synaptic and membrane time constants. This work introduces **ChronoPlastic Spiking Neural Networks (CPSNNs)**, a novel architectural principle that enables adaptive temporal credit assignment by dynamically modulating synaptic decay rates conditioned on the state of the network.
 
 CPSNNs maintain multiple internal temporal traces and learn a continuous time-warping function that selectively preserves task-relevant information while rapidly forgetting noise. Unlike prior approaches based on adaptive membrane constants, attention mechanisms, or external memory, CPSNNs embed temporal control directly within local synaptic dynamics, preserving linear-time complexity and neuromorphic compatibility.
 
